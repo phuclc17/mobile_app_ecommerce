@@ -2,4 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-</resources>
+
+    <color name="brand_dark">#1A202C</color> <color name="brand_beige">#EFEBE0</color> <color name="brand_background">#F8F9FA</color> <color name="text_primary">#1A202C</color>
+    <color name="text_secondary">#718096</color>
+    <color name="text_price">#1A202C</color> </resources>

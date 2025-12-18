@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">proj_ecom_mobile</string>
+    <string name="app_name">Fashion Store</string>
+    <string name="nav_home">Trang chủ</string>
+    <string name="nav_search">Danh mục</string> <string name="nav_profile">Cá nhân</string>
+
+    <string name="title_home">Thời trang sành điệu</string>
+    <string name="title_featured">Sản phẩm nổi bật</string>
 </resources>

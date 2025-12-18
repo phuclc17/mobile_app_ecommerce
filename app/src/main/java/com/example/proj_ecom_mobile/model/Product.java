@@ -22,13 +22,6 @@ public class Product implements Serializable {
         this.category = category;
     }
 
-    public Product(String id, String name, double price, String imageUrl) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.imageUrl = imageUrl;
-    }
-
     public String getId() {
         return id;
     }
