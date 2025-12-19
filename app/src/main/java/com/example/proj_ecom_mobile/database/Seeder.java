@@ -17,37 +17,37 @@ public class Seeder {
         // ==================================================================
 
         // Dữ liệu cũ của bạn (Giữ lại để không mất công)
-        products.add(new Product("p001", "Áo Sơ Mi Poplin Tay Ngắn", 650000, "Chất liệu vải Poplin thoáng mát, phom dáng rộng rãi thoải mái cho ngày hè.", "https://via.placeholder.com/300?text=Ao+So+Mi+Poplin", "Ao"));
-        products.add(new Product("p002", "Áo Sơ Mi Đỏ Thẫm Relaxed", 650000, "Thiết kế tối giản với tông màu đỏ thẫm sang trọng, phù hợp đi làm và đi chơi.", "https://via.placeholder.com/300?text=Ao+So+Mi+Do", "Ao"));
-        products.add(new Product("p017", "Áo Len Dệt Kim Khóa Kéo", 950000, "Áo khoác len nhẹ có khóa kéo tiện lợi, phong cách hiện đại.", "https://via.placeholder.com/300?text=Ao+Len+Zip", "Ao"));
-        products.add(new Product("p019", "Áo Thun Cổ Lọ Cotton", 890000, "Chất liệu Cotton mềm mại, giữ ấm tốt, dễ phối với áo khoác.", "https://via.placeholder.com/300?text=Ao+Co+Lo", "Ao"));
-        products.add(new Product("p021", "Áo Polo Dệt Kim", 790000, "Áo Polo phom dáng suông, chất liệu dệt kim cao cấp thoáng khí.", "https://via.placeholder.com/300?text=Ao+Polo", "Ao"));
+        products.add(new Product("p001", "Áo Sơ Mi Poplin Tay Ngắn", 650000, "Chất liệu vải Poplin thoáng mát, phom dáng rộng rãi thoải mái cho ngày hè.", "https://product.hstatic.net/200000911315/product/11_f9ad351033184b4a9045b6987f1df2cf.png", "Ao"));
+        products.add(new Product("p002", "Áo Sơ Mi Đỏ Thẫm Relaxed", 650000, "Thiết kế tối giản với tông màu đỏ thẫm sang trọng, phù hợp đi làm và đi chơi.", "https://product.hstatic.net/200000911315/product/15_3fa92f3bd913427f82f2ecd342044589.jpg", "Ao"));
+        products.add(new Product("p017", "Áo Len Dệt Kim Khóa Kéo", 950000, "Áo khoác len nhẹ có khóa kéo tiện lợi, phong cách hiện đại.", "https://static.massimodutti.net/assets/public/9632/424a/d3a64aa3bdeb/a020e3dbe718/01088238775-o1/01088238775-o1.jpg?ts=1759322753170&w=undefined&f=auto", "Ao"));
+        products.add(new Product("p019", "Áo Thun Cổ Lọ Cotton", 890000, "Chất liệu Cotton mềm mại, giữ ấm tốt, dễ phối với áo khoác.", "https://cdn.hstatic.net/products/200000911315/background_ac6079a3c4654a16aa24f6c17c8347f2.jpg", "Ao"));
+        products.add(new Product("p021", "Áo Polo Dệt Kim", 790000, "Áo Polo phom dáng suông, chất liệu dệt kim cao cấp thoáng khí.", "https://product.hstatic.net/200000911315/product/12_4f4ac6dc46f74b52bff8a95755669b7d.jpg", "Ao"));
 
         // Dữ liệu MỚI (Lấy cảm hứng từ Gian Saigon)
-        products.add(new Product("p022", "Áo Sơ Mi Linen Cổ Tàu", 720000, "Vải Linen tự nhiên thoáng mát, cổ lãnh tụ (Band collar) tinh tế.", "https://via.placeholder.com/300?text=So+Mi+Linen", "Ao"));
-        products.add(new Product("p023", "Áo Sơ Mi Oxford Xanh Nhạt", 680000, "Vải Oxford dày dặn đứng form, màu xanh pastel nhẹ nhàng.", "https://via.placeholder.com/300?text=So+Mi+Oxford", "Ao"));
-        products.add(new Product("p024", "Áo Thun Heavy Cotton Đen", 450000, "Áo phông định lượng cao (250gsm), không bai dão, form Boxy.", "https://via.placeholder.com/300?text=Tshirt+Den", "Ao"));
-        products.add(new Product("p025", "Áo Thun Heavy Cotton Trắng", 450000, "Áo phông trắng cơ bản, chất vải dày dặn, thấm hút mồ hôi.", "https://via.placeholder.com/300?text=Tshirt+Trang", "Ao"));
-        products.add(new Product("p026", "Áo Polo Len Cổ V", 750000, "Thiết kế cổ V không cúc (Skipper Polo), phong cách Retro.", "https://via.placeholder.com/300?text=Polo+Co+V", "Ao"));
-        products.add(new Product("p027", "Áo Sơ Mi Kẻ Sọc Xanh", 690000, "Họa tiết kẻ sọc nhỏ (Stripe), vải lụa nến mềm mại.", "https://via.placeholder.com/300?text=So+Mi+Ke", "Ao"));
-        products.add(new Product("p028", "Áo Thun Dài Tay Waffle", 550000, "Chất vải tổ ong (Waffle) giữ nhiệt nhẹ, phom Regular.", "https://via.placeholder.com/300?text=Thun+Waffle", "Ao"));
-        products.add(new Product("p029", "Áo Sơ Mi Nhung Tăm Nâu", 780000, "Chất liệu Corduroy (Nhung tăm) ấm áp, màu nâu Vintage.", "https://via.placeholder.com/300?text=So+Mi+Nhung", "Ao"));
-        products.add(new Product("p030", "Áo Ghi-lê Len Vặn Thừng", 650000, "Họa tiết Cable Knit cổ điển, phối layer với sơ mi cực đẹp.", "https://via.placeholder.com/300?text=Gile+Len", "Ao"));
-        products.add(new Product("p031", "Áo Sơ Mi Denim Wash", 850000, "Chất bò giấy mềm, màu xanh chàm đã qua xử lý wash.", "https://via.placeholder.com/300?text=So+Mi+Denim", "Ao"));
-        products.add(new Product("p032", "Áo Thun Raglan Tay Lỡ", 480000, "Tay áo phối màu tương phản, phong cách thể thao.", "https://via.placeholder.com/300?text=Thun+Raglan", "Ao"));
-        products.add(new Product("p033", "Áo Sơ Mi Cuba Họa Tiết", 750000, "Cổ Cuba (Cuban collar) phóng khoáng, họa tiết nhiệt đới chìm.", "https://via.placeholder.com/300?text=So+Mi+Cuba", "Ao"));
-        products.add(new Product("p034", "Áo Hoodie Trơn Màu Be", 890000, "Nỉ bông định lượng 350gsm, mũ trùm lớn đứng form.", "https://via.placeholder.com/300?text=Hoodie+Be", "Ao"));
-        products.add(new Product("p035", "Áo Sweater Nỉ Da Cá Xám", 650000, "Nỉ da cá (French Terry) thoáng khí, màu xám tiêu basic.", "https://via.placeholder.com/300?text=Sweater+Xam", "Ao"));
-        products.add(new Product("p036", "Áo Tank Top Gân Tăm", 320000, "Áo ba lỗ ôm body, chất thun gân co giãn, mặc lót hoặc tập gym.", "https://via.placeholder.com/300?text=Tanktop", "Ao"));
-        products.add(new Product("p037", "Áo Sơ Mi Flannel Kẻ Caro", 720000, "Vải dạ mỏng kẻ caro đỏ đen, phong cách Grunge.", "https://via.placeholder.com/300?text=Flannel+Caro", "Ao"));
-        products.add(new Product("p038", "Áo Thun Oversize In Hình", 520000, "Phom rộng, in hình Graphic nghệ thuật sau lưng.", "https://via.placeholder.com/300?text=Tshirt+Graphic", "Ao"));
-        products.add(new Product("p039", "Áo Polo Zip Kéo", 790000, "Cổ Polo thay cúc bằng khóa Zip kim loại hiện đại.", "https://via.placeholder.com/300?text=Polo+Zip", "Ao"));
-        products.add(new Product("p040", "Áo Len Cổ Tròn Màu Rêu", 850000, "Màu xanh rêu trầm, len lông cừu tổng hợp mềm mịn.", "https://via.placeholder.com/300?text=Len+Reu", "Ao"));
-        products.add(new Product("p041", "Áo Sơ Mi Lụa Đen", 880000, "Chất lụa rủ, bóng nhẹ, sang trọng cho tiệc tối.", "https://via.placeholder.com/300?text=So+Mi+Lua", "Ao"));
-        products.add(new Product("p042", "Áo Thun Henley Cổ Nút", 490000, "Cổ áo có hàng nút dài, tay dài, chất thun gân.", "https://via.placeholder.com/300?text=Henley", "Ao"));
-        products.add(new Product("p043", "Áo Cardigan Mỏng Mùa Thu", 750000, "Len mỏng nhẹ, khoác ngoài tiện lợi khi trời se lạnh.", "https://via.placeholder.com/300?text=Cardigan", "Ao"));
-        products.add(new Product("p044", "Áo Sơ Mi Overshirt Kaki", 950000, "Vải Kaki dày, có thể mặc như áo khoác sơ mi.", "https://via.placeholder.com/300?text=Overshirt", "Ao"));
-        products.add(new Product("p045", "Áo Thun Polo Sọc Ngang", 550000, "Họa tiết kẻ ngang nhỏ, phong cách trẻ trung.", "https://via.placeholder.com/300?text=Polo+Soc", "Ao"));
+        products.add(new Product("p022", "Áo Sơ Mi Linen Cổ Tàu", 720000, "Vải Linen tự nhiên thoáng mát, cổ lãnh tụ (Band collar) tinh tế.", "https://image.hm.com/assets/hm/bd/7f/bd7f64a25fac0aed14a4c66063fc384afe5cbe40.jpg?imwidth=2160", "Ao"));
+        products.add(new Product("p023", "Áo Sơ Mi Oxford Xanh Nhạt", 680000, "Vải Oxford dày dặn đứng form, màu xanh pastel nhẹ nhàng.", "https://product.hstatic.net/200000911315/product/sm_95f3cfacbbd34cb291bab5ecefc88e50.jpg", "Ao"));
+        products.add(new Product("p024", "Áo Thun Heavy Cotton Đen", 450000, "Áo phông định lượng cao (250gsm), không bai dão, form Boxy.", "https://cdn.hstatic.net/products/200000911315/4_8ee3f6b490d24cbebbff9aa443de4f6e.jpg", "Ao"));
+        products.add(new Product("p025", "Áo Thun Heavy Cotton Trắng", 450000, "Áo phông trắng cơ bản, chất vải dày dặn, thấm hút mồ hôi.", "https://cdn.hstatic.net/products/200000911315/3_e6573260b5934759ac1c7d3af88b67dc.jpg", "Ao"));
+        products.add(new Product("p026", "Áo Polo Len Cổ V", 750000, "Thiết kế cổ V không cúc (Skipper Polo), phong cách Retro.", "https://static.massimodutti.net/assets/public/e1e0/737c/da8d4529876d/a0a1e087fbc4/01064234700-o1/01064234700-o1.jpg?ts=1759322749505&w=undefined&f=auto", "Ao"));
+        products.add(new Product("p027", "Áo Sơ Mi Kẻ Sọc Xanh", 690000, "Họa tiết kẻ sọc nhỏ (Stripe), vải lụa nến mềm mại.", "https://lados.vn/wp-content/uploads/2024/07/2-soc-xanh-ld8137.jpg", "Ao"));
+        products.add(new Product("p028", "Áo Thun Dài Tay Waffle", 550000, "Chất vải tổ ong (Waffle) giữ nhiệt nhẹ, phom Regular.", "https://product.hstatic.net/200000911315/product/10_694a42bc44764002856d70f59ac27a03.png", "Ao"));
+        products.add(new Product("p029", "Áo Sơ Mi Nhung Tăm Nâu", 780000, "Chất liệu Corduroy (Nhung tăm) ấm áp, màu nâu Vintage.", "https://product.hstatic.net/200000911315/product/5_a772c357436842d7bb137e737bc033b7.png", "Ao"));
+        products.add(new Product("p030", "Áo Ghi-lê Len Vặn Thừng", 650000, "Họa tiết Cable Knit cổ điển, phối layer với sơ mi cực đẹp.", "https://sakurafashion.vn/upload/sanpham/large/76234-ao-len-gile-nu-van-thung-3.jpg", "Ao"));
+        products.add(new Product("p031", "Áo Sơ Mi Denim Wash", 850000, "Chất bò giấy mềm, màu xanh chàm đã qua xử lý wash.", "https://product.hstatic.net/200000588671/product/dsc05994_4fc80e8027854991982d872e12dbee48_grande.jpg", "Ao"));
+        products.add(new Product("p032", "Áo Thun Raglan Tay Lỡ", 480000, "Tay áo phối màu tương phản, phong cách thể thao.", "https://bizweb.dktcdn.net/100/399/392/products/ao-polo-nam-tay-raglan-phoi-mau-hi-ao-thun-nam-co-be-cao-cap-chat-cotton-5.jpg?v=1745288586097", "Ao"));
+        products.add(new Product("p033", "Áo Sơ Mi Cuba Họa Tiết", 750000, "Cổ Cuba (Cuban collar) phóng khoáng, họa tiết nhiệt đới chìm.", "https://product.hstatic.net/200000911315/product/11_f9ad351033184b4a9045b6987f1df2cf.png", "Ao"));
+        products.add(new Product("p034", "Áo Hoodie Trơn Màu Be", 890000, "Nỉ bông định lượng 350gsm, mũ trùm lớn đứng form.", "https://4menshop.com/images/thumbs/2023/04/ao-khoac-ni-tron-ak013-mau-be-15915.jpg", "Ao"));
+        products.add(new Product("p035", "Áo Sweater Nỉ Da Cá Xám", 650000, "Nỉ da cá (French Terry) thoáng khí, màu xám tiêu basic.", "https://lados.vn/wp-content/uploads/2024/09/z5007947807474-f6e9c_1024x1024.jpg", "Ao"));
+        products.add(new Product("p036", "Áo Tank Top Gân Tăm", 320000, "Áo ba lỗ ôm body, chất thun gân co giãn, mặc lót hoặc tập gym.", "https://product.hstatic.net/200000911315/product/5_8828200c57404a6591ae5db7f2619de7.png", "Ao"));
+        products.add(new Product("p037", "Áo Sơ Mi Flannel Kẻ Caro", 720000, "Vải dạ mỏng kẻ caro đỏ đen, phong cách Grunge.", "https://product.hstatic.net/200000911315/product/4_f7927ec016824afd8f33f66d9d7708e0.png", "Ao"));
+        products.add(new Product("p038", "Áo Thun Oversize In Hình", 520000, "Phom rộng, in hình Graphic nghệ thuật sau lưng.", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqT298r0y29Z5k9rRbD07mPSbT5LiqhufDpw&s", "Ao"));
+        products.add(new Product("p039", "Áo Polo Zip Kéo", 790000, "Cổ Polo thay cúc bằng khóa Zip kim loại hiện đại.", "https://product.hstatic.net/200000911315/product/24_fd9bce4d905842799cffaf1453e77f5c.jpg", "Ao"));
+        products.add(new Product("p040", "Áo Len Cổ Tròn Màu Rêu", 850000, "Màu xanh rêu trầm, len lông cừu tổng hợp mềm mịn.", "https://4men.com.vn/thumbs/2022/11/ao-len-co-lo-tron-al008-mau-reu-21964-p.JPG", "Ao"));
+        products.add(new Product("p041", "Áo Sơ Mi Lụa Đen", 880000, "Chất lụa rủ, bóng nhẹ, sang trọng cho tiệc tối.", "https://product.hstatic.net/200000911315/product/30_6c300250d0c4433c97d7dafbd49d6e68.jpg", "Ao"));
+        products.add(new Product("p042", "Áo Thun Henley Cổ Nút", 490000, "Cổ áo có hàng nút dài, tay dài, chất thun gân.", "https://s3.ap-southeast-1.amazonaws.com/thegmen.vn/2023/11/1700708665961l2vue6.jpg", "Ao"));
+        products.add(new Product("p043", "Áo Cardigan Mỏng Mùa Thu", 750000, "Len mỏng nhẹ, khoác ngoài tiện lợi khi trời se lạnh.", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQm1SpZ_CY-v3AYGPL1j8P9YUQx6CnnOP4kMw&s", "Ao"));
+        products.add(new Product("p044", "Áo Sơ Mi Overshirt Kaki", 950000, "Vải Kaki dày, có thể mặc như áo khoác sơ mi.", "https://yame.vn/cdn/shop/files/ao-s-mi-no-style-m64-xam-1174878715.jpg?v=1760790394", "Ao"));
+        products.add(new Product("p045", "Áo Thun Polo Sọc Ngang", 550000, "Họa tiết kẻ ngang nhỏ, phong cách trẻ trung.", "https://4men.com.vn/thumbs/2021/05/ao-polo-soc-ngang-mau-xanh-po038-19566-p.jpg", "Ao"));
 
         // ==================================================================
         // 2. NHÓM QUẦN (BOTTOMS) - Tây, Jeans, Short, Kaki
