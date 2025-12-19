@@ -141,13 +141,13 @@ public class Seeder {
         products.add(new Product("p091", "Túi Du Lịch Duffle", 1500000, "Túi trống cỡ lớn, da bò sáp, dùng cho chuyến đi 3 ngày.", "https://bizweb.dktcdn.net/100/462/540/products/firebrick.jpg?v=1737010706113", "PhuKien"));
         products.add(new Product("p092", "Giày Loafer Da Bóng", 1800000, "Giày lười da bóng (Penny Loafer), đế cao 3cm.", "https://giaynamducha.com/wp-content/uploads/2024/11/IMG_9383-e1731317152957.jpg", "PhuKien"));
         products.add(new Product("p093", "Dép Sandal Quai Hậu", 850000, "Dép xăng-đan đế trấu hoặc cao su, quai da.", "https://product.hstatic.net/200000374789/product/zen_0057_7debc67e70a64b12962ba462ee7b4163_master.jpg", "PhuKien"));
-        products.add(new Product("p094", "Mũ Len Beanie", 250000, "Mũ len dệt kim ôm đầu, giữ ấm tai.", "https://via.placeholder.com/300?text=Beanie", "PhuKien"));
-        products.add(new Product("p095", "Thắt Lưng Da Nâu Bản To", 680000, "Da bò nguyên miếng màu nâu, khóa đồng đúc.", "https://via.placeholder.com/300?text=Day+Nit+Nau", "PhuKien"));
-        products.add(new Product("p096", "Ví Cầm Tay Clutch", 1100000, "Ví dài cầm tay, đựng vừa điện thoại và giấy tờ.", "https://via.placeholder.com/300?text=Clutch", "PhuKien"));
-        products.add(new Product("p097", "Găng Tay Da Cảm Ứng", 450000, "Găng tay da lót nỉ, đầu ngón tay dùng được điện thoại.", "https://via.placeholder.com/300?text=Gang+Tay", "PhuKien"));
-        products.add(new Product("p098", "Túi Bao Tử (Bum Bag)", 380000, "Đeo hông hoặc đeo chéo ngực, vải dù chống nước.", "https://via.placeholder.com/300?text=Bum+Bag", "PhuKien"));
-        products.add(new Product("p099", "Dây Đeo Thẻ Da", 150000, "Dây đeo thẻ nhân viên bằng da, màu sắc trang nhã.", "https://via.placeholder.com/300?text=Day+The", "PhuKien"));
-        products.add(new Product("p100", "Móc Khóa Da Handmade", 90000, "Móc khóa da bò dập tên, phụ kiện nhỏ xinh.", "https://via.placeholder.com/300?text=Moc+Khoa", "PhuKien"));
+        products.add(new Product("p094", "Mũ Len Beanie", 250000, "Mũ len dệt kim ôm đầu, giữ ấm tai.", "https://cdn.vuahanghieu.com/unsafe/0x500/left/top/smart/filters:quality(90)/https://admin.vuahanghieu.com/upload/product/2025/12/mu-len-mlb-new-york-yankees-3abnb1556-50bks-mau-den-693935e661f18-10122025155710.jpg", "PhuKien"));
+        products.add(new Product("p095", "Thắt Lưng Da Nâu Bản To", 680000, "Da bò nguyên miếng màu nâu, khóa đồng đúc.", "https://static.zara.net/assets/public/969a/8dd7/cb8e439b83be/97c7eaf9b8c7/05919324716-a1/05919324716-a1.jpg", "PhuKien"));
+        products.add(new Product("p096", "Ví Cầm Tay Clutch", 1100000, "Ví dài cầm tay, đựng vừa điện thoại và giấy tờ.", "https://cdn.hstatic.net/products/1000260559/clutch-da-bo-lich-lam-cam-tay-tien-loi-4880963__6__8cd70d3156634ebc9307d57a167ff04b_medium.jpg", "PhuKien"));
+        products.add(new Product("p097", "Găng Tay Da Cảm Ứng", 450000, "Găng tay da lót nỉ, đầu ngón tay dùng được điện thoại.", "https://laforce.vn/wp-content/uploads/2024/12/gang-tay-nam-GTLACUNA-23-D-1-900x1080.jpg", "PhuKien"));
+        products.add(new Product("p098", "Túi Bao Tử (Bum Bag)", 380000, "Đeo hông hoặc đeo chéo ngực, vải dù chống nước.", "https://m.media-amazon.com/images/I/51+i01KqYrL._AC_UL480_FMwebp_QL65_.jpg", "PhuKien"));
+        products.add(new Product("p099", "Dây Đeo Thẻ Da", 150000, "Dây đeo thẻ nhân viên bằng da, màu sắc trang nhã.", "https://product.hstatic.net/1000362139/product/bo_mat_the_da_bb8ba0ccbfa54291a04cf71c2f186289_large.jpg", "PhuKien"));
+        products.add(new Product("p100", "Móc Khóa Da Handmade", 90000, "Móc khóa da bò dập tên, phụ kiện nhỏ xinh.", "https://thecrafthouse.vn/cdn/shop/files/Dogcharm_ChoiBanh_3_11zon.jpg", "PhuKien"));
 
 
         // Vòng lặp đẩy lên Firebase (Giữ nguyên logic cũ của bạn)
