@@ -15,6 +15,7 @@
         android:theme="@style/Theme.Proj_ecom_mobile"
         tools:targetApi="31">
 
+        <!-- MAIN ACTIVITY -->
         <activity
             android:name=".activity.user.MainActivity"
             android:exported="true">
@@ -23,6 +24,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- CATEGORY ACTIVITY -->
+        <activity
+            android:name=".activity.user.CategoryActivity"
+            android:exported="false" />
 
     </application>
 
