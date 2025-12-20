@@ -12,7 +12,20 @@
           "package_name": "com.example.proj_ecom_mobile"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "73050383730-beseamm59326rapgvi1gdcevdoghbqj4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.proj_ecom_mobile",
+            "certificate_hash": "c578da9e2f63b7963433a8b6f3914457311b6d21"
+          }
+        },
+        {
+          "client_id": "73050383730-mcnno76i8574mgpgmn6igamkbbk04bek.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyD0ATRjIYFs9g-PIULnFmjpzg1UjqwZ49Q"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "73050383730-mcnno76i8574mgpgmn6igamkbbk04bek.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

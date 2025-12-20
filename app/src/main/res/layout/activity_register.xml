@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center_horizontal"
+    android:background="#F8F9FA">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ĐĂNG KÝ TÀI KHOẢN"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_marginTop="40dp"
+        android:textColor="#000000"/>
+
+    <EditText
+        android:id="@+id/edt_reg_email"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="Email"
+        android:background="@android:color/white"
+        android:padding="12dp"
+        android:layout_marginTop="30dp"/>
+
+    <EditText
+        android:id="@+id/edt_reg_password"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="Mật khẩu"
+        android:inputType="textPassword"
+        android:background="@android:color/white"
+        android:padding="12dp"
+        android:layout_marginTop="12dp"/>
+
+    <EditText
+        android:id="@+id/edt_reg_confirm_pass"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="Nhập lại mật khẩu"
+        android:inputType="textPassword"
+        android:background="@android:color/white"
+        android:padding="12dp"
+        android:layout_marginTop="12dp"/>
+
+    <Button
+        android:id="@+id/btn_register"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:text="Đăng ký ngay"
+        android:textStyle="bold"
+        android:backgroundTint="#000000"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="24dp"/>
+
+    <TextView
+        android:id="@+id/tv_go_to_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Đã có tài khoản? Đăng nhập ngay"
+        android:layout_marginTop="16dp"
+        android:textColor="#555555"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hoặc đăng ký bằng Google"
+        android:layout_marginTop="30dp"/>
+
+    <ImageView
+        android:id="@+id/btn_google_register"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:src="@drawable/ic_google"
+        android:background="@drawable/bg_white_rounded"
+        android:padding="10dp"
+        android:elevation="4dp"
+        android:layout_marginTop="16dp"/>
+
+</LinearLayout>
