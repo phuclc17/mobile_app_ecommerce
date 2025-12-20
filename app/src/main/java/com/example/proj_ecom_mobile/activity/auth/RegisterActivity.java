@@ -3,6 +3,7 @@ package com.example.proj_ecom_mobile.activity.auth;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -36,6 +37,8 @@ public class RegisterActivity extends AppCompatActivity {
     private TextView tvLogin;
     private ImageView btnGoogle;
 
+    private ImageView imgBack;
+
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private SessionManager sessionManager;
@@ -54,12 +57,20 @@ public class RegisterActivity extends AppCompatActivity {
         initView();
         setupGoogleSignIn();
 
+        imgBack.setOnClickListener(v -> {
+            finish();
+        });
+
         btnRegister.setOnClickListener(v -> handleRegister());
+
         tvLogin.setOnClickListener(v -> finish());
+
         btnGoogle.setOnClickListener(v -> signInWithGoogle());
     }
 
     private void initView() {
+        imgBack = findViewById(R.id.img_back_register);
+
         edtEmail = findViewById(R.id.edt_reg_email);
         edtPassword = findViewById(R.id.edt_reg_password);
         edtConfirmPassword = findViewById(R.id.edt_reg_confirm_pass);
@@ -92,14 +103,14 @@ public class RegisterActivity extends AppCompatActivity {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
-                        saveUserToFirestore(user, false);
+                        saveUserToFirestore(user, false, pass);
                     } else {
                         Toast.makeText(this, "Đăng ký thất bại: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
     }
 
-    private void saveUserToFirestore(FirebaseUser user, boolean isGoogleSignIn) {
+    private void saveUserToFirestore(FirebaseUser user, boolean isGoogleSignIn, String passwordInput) {
         if (user == null) return;
 
         Map<String, Object> userMap = new HashMap<>();
@@ -108,6 +119,7 @@ public class RegisterActivity extends AppCompatActivity {
         userMap.put("role", "user");
         userMap.put("name", user.getEmail());
         userMap.put("created_at", System.currentTimeMillis());
+        userMap.put("password", passwordInput);
 
         db.collection("Users").document(user.getUid())
                 .set(userMap)
@@ -122,6 +134,7 @@ public class RegisterActivity extends AppCompatActivity {
                     } else {
                         Toast.makeText(RegisterActivity.this, "Đăng ký thành công! Vui lòng đăng nhập.", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         startActivity(intent);
                         finish();
                     }
@@ -175,7 +188,7 @@ public class RegisterActivity extends AppCompatActivity {
         db.collection("Users").document(user.getUid()).get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (!documentSnapshot.exists()) {
-                        saveUserToFirestore(user, true);
+                        saveUserToFirestore(user, true, "Google Login");
                     } else {
                         sessionManager.createLoginSession(user.getEmail(), "user");
                         Intent intent = new Intent(RegisterActivity.this, MainActivity.class);

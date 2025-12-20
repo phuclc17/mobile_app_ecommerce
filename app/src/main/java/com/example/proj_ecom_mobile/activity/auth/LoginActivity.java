@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.proj_ecom_mobile.R;
 import com.example.proj_ecom_mobile.activity.user.MainActivity;
+import com.example.proj_ecom_mobile.database.SQLHelper;
 import com.example.proj_ecom_mobile.database.SessionManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -32,11 +33,12 @@ public class LoginActivity extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
     private SessionManager sessionManager;
 
-    // Khai báo các biến giao diện
     private ImageView btnGoogle;
+    private ImageView imgBack;
     private EditText edtEmail, edtPassword;
     private Button btnLogin;
-    private TextView tvRegister; // Đây là nút chuyển sang Đăng ký
+    private TextView tvRegister;
+    private TextView tvForgotPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +48,6 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         sessionManager = new SessionManager(this);
 
-        // Cấu hình Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -56,28 +57,38 @@ public class LoginActivity extends AppCompatActivity {
 
         initView();
 
-        btnGoogle.setOnClickListener(v -> signInWithGoogle());
+        // Nút Back
+        imgBack.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            finish();
+        });
 
-        // 2. Nút Chuyển sang Đăng ký (ĐÂY LÀ PHẦN BẠN THIẾU)
+        tvForgotPassword.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+            startActivity(intent);
+        });
+
         tvRegister.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);
         });
 
-        // 3. Nút Đăng nhập bằng Email/Pass
         btnLogin.setOnClickListener(v -> handleLoginWithEmail());
+        btnGoogle.setOnClickListener(v -> signInWithGoogle());
     }
 
     private void initView() {
-        // Ánh xạ ID chuẩn theo file layout xml của bạn
+        imgBack = findViewById(R.id.img_back_login);
         btnGoogle = findViewById(R.id.btn_google_sign_in);
         edtEmail = findViewById(R.id.edt_email);
         edtPassword = findViewById(R.id.edt_password);
         btnLogin = findViewById(R.id.btn_login);
-        tvRegister = findViewById(R.id.tv_switch_register); // ID này phải trùng khớp với trong XML
+        tvRegister = findViewById(R.id.tv_switch_register);
+        tvForgotPassword = findViewById(R.id.tv_forgot_pass);
     }
 
-    // --- XỬ LÝ ĐĂNG NHẬP THƯỜNG ---
     private void handleLoginWithEmail() {
         String email = edtEmail.getText().toString().trim();
         String password = edtPassword.getText().toString().trim();
@@ -98,7 +109,6 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
-    // --- XỬ LÝ GOOGLE ---
     private void signInWithGoogle() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -107,14 +117,13 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
-                Toast.makeText(this, "Google Sign In thất bại: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Google Sign In thất bại.", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -136,6 +145,20 @@ public class LoginActivity extends AppCompatActivity {
         if (user != null) {
             String email = user.getEmail();
             sessionManager.createLoginSession(email, "user");
+
+            // --- ĐOẠN CODE QUAN TRỌNG: XÓA SẠCH GIỎ HÀNG KHÁCH ---
+            try {
+                SQLHelper sqlHelper = new SQLHelper(this);
+                sqlHelper.clearCart(); // Dùng hàm chính chủ của SQLHelper
+                sqlHelper.close();     // Đóng kết nối cho an toàn
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            // -----------------------------------------------------
+
+            if (MainActivity.manggiohang != null) {
+                MainActivity.manggiohang.clear();
+            }
 
             Toast.makeText(this, "Xin chào " + email, Toast.LENGTH_SHORT).show();
 

@@ -34,6 +34,11 @@ public class SQLHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public void queryData(String sql) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(sql);
+    }
+
     public void syncProducts(ArrayList<Product> list) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.beginTransaction();
@@ -135,6 +140,7 @@ public class SQLHelper extends SQLiteOpenHelper {
         db.delete("cart", "productId = ? AND size = ?", new String[]{productId, size});
         db.close();
     }
+
     public void updateQuantity(String productId, String size, int newQuantity) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();

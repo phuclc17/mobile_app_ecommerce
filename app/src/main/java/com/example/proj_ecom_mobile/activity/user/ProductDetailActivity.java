@@ -3,7 +3,6 @@ package com.example.proj_ecom_mobile.activity.user;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,7 +13,12 @@ import com.example.proj_ecom_mobile.R;
 import com.example.proj_ecom_mobile.database.SQLHelper;
 import com.example.proj_ecom_mobile.model.CartItem;
 import com.example.proj_ecom_mobile.model.Product;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ProductDetailActivity extends AppCompatActivity {
 
@@ -25,6 +29,8 @@ public class ProductDetailActivity extends AppCompatActivity {
     private Product product;
     private SQLHelper sqlHelper;
     private String selectedSize = null;
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +38,8 @@ public class ProductDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_product_detail);
 
         sqlHelper = new SQLHelper(this);
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
         initView();
 
         btnS.setOnClickListener(v -> selectSize("S"));
@@ -59,21 +67,46 @@ public class ProductDetailActivity extends AppCompatActivity {
             }
 
             if (product != null) {
-                CartItem item = new CartItem(
-                        product.getId(),
-                        product.getName(),
-                        product.getPrice(),
-                        product.getImageUrl(),
-                        1,
-                        selectedSize
-                );
-                sqlHelper.addToCart(item);
-                Toast.makeText(this, "Đã thêm vào giỏ: Size " + selectedSize, Toast.LENGTH_SHORT).show();
+                FirebaseUser currentUser = mAuth.getCurrentUser();
 
-                Intent intent = new Intent(ProductDetailActivity.this, CartActivity.class);
-                startActivity(intent);
+                if (currentUser == null) {
+                    CartItem item = new CartItem(
+                            product.getId(),
+                            product.getName(),
+                            product.getPrice(),
+                            product.getImageUrl(),
+                            1,
+                            selectedSize
+                    );
+                    sqlHelper.addToCart(item);
+                    Toast.makeText(this, "Đã thêm vào giỏ hàng: Size " + selectedSize, Toast.LENGTH_SHORT).show();
+                } else {
+                    addToFirestore(currentUser.getUid());
+                }
             }
         });
+    }
+
+    private void addToFirestore(String userId) {
+        String cartId = userId + "_" + product.getId() + "_" + selectedSize;
+
+        Map<String, Object> cartMap = new HashMap<>();
+        cartMap.put("id_user", userId);
+        cartMap.put("id_product", product.getId());
+        cartMap.put("name", product.getName());
+        cartMap.put("price", product.getPrice());
+        cartMap.put("image", product.getImageUrl());
+        cartMap.put("quantity", 1);
+        cartMap.put("size", selectedSize);
+
+        db.collection("Cart").document(cartId)
+                .set(cartMap)
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(this, "Đã lưu vào giỏ hàng của bạn!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(ProductDetailActivity.this, CartActivity.class);
+                    startActivity(intent);
+                })
+                .addOnFailureListener(e -> Toast.makeText(this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 
     private void initView() {

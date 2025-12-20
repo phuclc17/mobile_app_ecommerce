@@ -11,21 +11,29 @@ import com.example.proj_ecom_mobile.database.Seeder;
 import com.example.proj_ecom_mobile.fragment.HomeFragment;
 import com.example.proj_ecom_mobile.fragment.ProfileFragment;
 import com.example.proj_ecom_mobile.fragment.SearchFragment;
+import com.example.proj_ecom_mobile.model.CartItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
+
+    // --- KHAI BÁO BIẾN GIỎ HÀNG (QUAN TRỌNG) ---
+    public static ArrayList<CartItem> manggiohang;
+    // -------------------------------------------
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // --- KÍCH HOẠT SEEDER THÔNG MINH ---
-        // Truyền 'this' (context) vào để kiểm tra bộ nhớ
-        // Nó sẽ tự động bỏ qua nếu đã chạy rồi.
+        // Khởi tạo giỏ hàng nếu chưa có
+        if (manggiohang == null) {
+            manggiohang = new ArrayList<>();
+        }
+
         Seeder.seedProductData(this);
-        // -------------------------------------
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
 
