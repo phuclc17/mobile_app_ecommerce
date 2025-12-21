@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Thông tin Mã giảm giá"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="15dp"/>
+
+    <EditText
+        android:id="@+id/edt_voucher_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Mã (VD: SALE10)"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Loại giảm giá:"
+        android:layout_marginTop="10dp"/>
+
+    <RadioGroup
+        android:id="@+id/rg_voucher_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <RadioButton
+            android:id="@+id/rb_type_fixed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tiền mặt (VNĐ)"
+            android:checked="true"/>
+        <RadioButton
+            android:id="@+id/rb_type_percent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Phần trăm (%)"
+            android:layout_marginStart="20dp"/>
+    </RadioGroup>
+
+    <EditText
+        android:id="@+id/edt_voucher_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Giá trị (VD: 10000 hoặc 10)"
+        android:inputType="numberDecimal"
+        android:layout_marginTop="10dp"/>
+
+    <EditText
+        android:id="@+id/edt_voucher_quantity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Số lượng giới hạn (VD: 10)"
+        android:inputType="number"/>
+
+</LinearLayout>

@@ -44,6 +44,15 @@
         android:layout_marginBottom="16dp"/>
 
     <Button
+        android:id="@+id/btn_manage_voucher"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Quản lý Mã giảm giá"
+        android:backgroundTint="#333333"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
         android:id="@+id/btn_admin_logout"
         android:layout_width="match_parent"
         android:layout_height="60dp"

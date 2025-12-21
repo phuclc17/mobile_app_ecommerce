@@ -11,7 +11,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class AdminMainActivity extends AppCompatActivity {
 
-    private Button btnProduct, btnUser, btnOrder, btnLogout;
+    private Button btnProduct, btnUser, btnOrder, btnVoucher, btnLogout;
     private SessionManager sessionManager;
 
     @Override
@@ -24,11 +24,13 @@ public class AdminMainActivity extends AppCompatActivity {
         btnProduct = findViewById(R.id.btn_manage_product);
         btnUser = findViewById(R.id.btn_manage_user);
         btnOrder = findViewById(R.id.btn_manage_order);
+        btnVoucher = findViewById(R.id.btn_manage_voucher);
         btnLogout = findViewById(R.id.btn_admin_logout);
 
         btnProduct.setOnClickListener(v -> startActivity(new Intent(this, ManageProductActivity.class)));
         btnUser.setOnClickListener(v -> startActivity(new Intent(this, ManageUserActivity.class)));
         btnOrder.setOnClickListener(v -> startActivity(new Intent(this, ManageOrderActivity.class)));
+        btnVoucher.setOnClickListener(v -> startActivity(new Intent(this, ManageVoucherActivity.class)));
 
         btnLogout.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
