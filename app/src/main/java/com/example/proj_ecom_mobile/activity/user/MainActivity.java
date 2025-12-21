@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         // --- KÍCH HOẠT SEEDER THÔNG MINH ---
         // Truyền 'this' (context) vào để kiểm tra bộ nhớ
         // Nó sẽ tự động bỏ qua nếu đã chạy rồi.
-        
+
         // -------------------------------------
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);

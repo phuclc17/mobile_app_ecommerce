@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -8,10 +9,23 @@
     android:background="#F8F9FA">
 
     <ImageView
+        android:id="@+id/img_back_login"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="start"
+        android:src="@android:drawable/ic_menu_close_clear_cancel"
+        android:padding="10dp"
+        android:layout_marginBottom="10dp"
+        app:tint="#000000"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackgroundBorderless"/>
+
+    <ImageView
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:src="@drawable/ic_cart"
-        android:layout_marginTop="40dp"/>
+        android:layout_marginTop="10dp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -68,11 +82,16 @@
         android:layout_marginTop="12dp"/>
 
     <TextView
+        android:id="@+id/tv_forgot_pass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Quên mật khẩu?"
         android:layout_gravity="end"
-        android:layout_marginTop="8dp"/>
+        android:layout_marginTop="8dp"
+        android:padding="8dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackground"/>
 
     <Button
         android:id="@+id/btn_login"
