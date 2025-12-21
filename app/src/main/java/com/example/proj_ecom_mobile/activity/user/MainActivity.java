@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment;
 import android.view.MenuItem;
 
 import com.example.proj_ecom_mobile.R;
-import com.example.proj_ecom_mobile.database.Seeder;
 import com.example.proj_ecom_mobile.fragment.HomeFragment;
 import com.example.proj_ecom_mobile.fragment.ProfileFragment;
 import com.example.proj_ecom_mobile.fragment.SearchFragment;
@@ -24,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         // --- KÍCH HOẠT SEEDER THÔNG MINH ---
         // Truyền 'this' (context) vào để kiểm tra bộ nhớ
         // Nó sẽ tự động bỏ qua nếu đã chạy rồi.
-        Seeder.seedProductData(this);
+
         // -------------------------------------
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);

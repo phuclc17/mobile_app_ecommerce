@@ -14,7 +14,10 @@
         android:src="@android:drawable/ic_menu_close_clear_cancel"
         android:padding="10dp"
         android:layout_marginBottom="10dp"
-        app:tint="#000000"/>
+        app:tint="#000000"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackgroundBorderless"/>
 
     <ImageView
         android:layout_width="60dp"

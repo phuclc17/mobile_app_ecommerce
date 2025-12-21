@@ -12,10 +12,15 @@ public class Order implements Serializable {
     private String status;
     private List<CartItem> items;
 
+    // --- CÁC TRƯỜNG MỚI THÊM CHO VIỆC GIAO HÀNG ---
+    private String recipientName; // Tên người nhận
+    private String phoneNumber;   // Số điện thoại
+    private String address;       // Địa chỉ giao hàng
+
     public Order() {
     }
 
-    public Order(String id, String userId, String userEmail, String date, double totalPrice, String status, List<CartItem> items) {
+    public Order(String id, String userId, String userEmail, String date, double totalPrice, String status, List<CartItem> items, String recipientName, String phoneNumber, String address) {
         this.id = id;
         this.userId = userId;
         this.userEmail = userEmail;
@@ -23,61 +28,39 @@ public class Order implements Serializable {
         this.totalPrice = totalPrice;
         this.status = status;
         this.items = items;
+        this.recipientName = recipientName;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
     }
 
-    public String getId() {
-        return id;
-    }
+    // --- GETTER & SETTER ---
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+    public String getUserId() { return userId; }
+    public void setUserId(String userId) { this.userId = userId; }
 
-    public String getUserId() {
-        return userId;
-    }
+    public String getUserEmail() { return userEmail; }
+    public void setUserEmail(String userEmail) { this.userEmail = userEmail; }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
+    public String getDate() { return date; }
+    public void setDate(String date) { this.date = date; }
 
-    public String getUserEmail() {
-        return userEmail;
-    }
+    public double getTotalPrice() { return totalPrice; }
+    public void setTotalPrice(double totalPrice) { this.totalPrice = totalPrice; }
 
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
-    }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 
-    public String getDate() {
-        return date;
-    }
+    public List<CartItem> getItems() { return items; }
+    public void setItems(List<CartItem> items) { this.items = items; }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
+    public String getRecipientName() { return recipientName; }
+    public void setRecipientName(String recipientName) { this.recipientName = recipientName; }
 
-    public double getTotalPrice() {
-        return totalPrice;
-    }
+    public String getPhoneNumber() { return phoneNumber; }
+    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
 
-    public void setTotalPrice(double totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public List<CartItem> getItems() {
-        return items;
-    }
-
-    public void setItems(List<CartItem> items) {
-        this.items = items;
-    }
+    public String getAddress() { return address; }
+    public void setAddress(String address) { this.address = address; }
 }

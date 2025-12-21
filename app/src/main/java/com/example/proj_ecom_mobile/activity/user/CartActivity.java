@@ -48,7 +48,6 @@ public class CartActivity extends AppCompatActivity {
 
         initView();
 
-        // Load dữ liệu
         loadCartData();
 
         btnBack.setOnClickListener(v -> finish());
@@ -74,16 +73,14 @@ public class CartActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         if (currentUser == null) {
-            // --- KHÁCH (Chưa đăng nhập) -> Lấy SQL ---
             cartList = sqlHelper.getCartItems();
             setupRecyclerView();
         } else {
-            // --- THÀNH VIÊN (Đã đăng nhập) -> Lấy Firebase ---
             db.collection("Cart")
                     .whereEqualTo("id_user", currentUser.getUid())
                     .get()
                     .addOnSuccessListener(queryDocumentSnapshots -> {
-                        cartList.clear(); // Xóa sạch list tạm
+                        cartList.clear();
                         for (DocumentSnapshot doc : queryDocumentSnapshots) {
                             String id = doc.getString("id_product");
                             String name = doc.getString("name");
@@ -93,7 +90,8 @@ public class CartActivity extends AppCompatActivity {
                             String size = doc.getString("size");
 
                             if (id != null && price != null && quantity != null) {
-                                cartList.add(new CartItem(id, name, price, image, quantity.intValue(), size));
+                                // SỬA Ở ĐÂY: Thêm số 0 ở cuối cho tham số 'stock'
+                                cartList.add(new CartItem(id, name, price, image, quantity.intValue(), size, 0));
                             }
                         }
                         setupRecyclerView();

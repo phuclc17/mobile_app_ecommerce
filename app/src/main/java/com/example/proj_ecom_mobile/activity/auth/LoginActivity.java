@@ -36,7 +36,10 @@ public class LoginActivity extends AppCompatActivity {
     private ImageView btnGoogle;
     private EditText edtEmail, edtPassword;
     private Button btnLogin;
-    private TextView tvRegister; // Đây là nút chuyển sang Đăng ký
+    private TextView tvRegister;
+
+    // 1. Khai báo thêm biến nút Back (X)
+    private ImageView imgBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,25 +59,37 @@ public class LoginActivity extends AppCompatActivity {
 
         initView();
 
+        // 2. Xử lý sự kiện nút Back (X) - Quay về trang chủ
+        imgBack.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            // Cờ này giúp quay lại Main mà không tạo chồng Activity mới
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            finish();
+        });
+
         btnGoogle.setOnClickListener(v -> signInWithGoogle());
 
-        // 2. Nút Chuyển sang Đăng ký (ĐÂY LÀ PHẦN BẠN THIẾU)
+        // Nút Chuyển sang Đăng ký
         tvRegister.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);
         });
 
-        // 3. Nút Đăng nhập bằng Email/Pass
+        // Nút Đăng nhập bằng Email/Pass
         btnLogin.setOnClickListener(v -> handleLoginWithEmail());
     }
 
     private void initView() {
-        // Ánh xạ ID chuẩn theo file layout xml của bạn
+        // Ánh xạ ID chuẩn theo file layout xml
+        // 3. Ánh xạ nút Back (ID phải trùng với file XML activity_login.xml)
+        imgBack = findViewById(R.id.img_back_login);
+
         btnGoogle = findViewById(R.id.btn_google_sign_in);
         edtEmail = findViewById(R.id.edt_email);
         edtPassword = findViewById(R.id.edt_password);
         btnLogin = findViewById(R.id.btn_login);
-        tvRegister = findViewById(R.id.tv_switch_register); // ID này phải trùng khớp với trong XML
+        tvRegister = findViewById(R.id.tv_switch_register);
     }
 
     // --- XỬ LÝ ĐĂNG NHẬP THƯỜNG ---
