@@ -2,7 +2,6 @@ package com.example.proj_ecom_mobile.activity.auth;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -17,7 +16,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     private EditText edtEmail;
     private Button btnReset;
-    private TextView tvBack;
+    private TextView tvBack; // Sửa thành TextView cho khớp với XML của bạn
     private FirebaseAuth mAuth;
 
     @Override
@@ -27,11 +26,9 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        edtEmail = findViewById(R.id.edt_reset_email);
-        btnReset = findViewById(R.id.btn_reset_password);
-        tvBack = findViewById(R.id.tv_back_login);
+        initView();
 
-        // Sự kiện nút Gửi
+        // Xử lý sự kiện nút Gửi
         btnReset.setOnClickListener(v -> {
             String email = edtEmail.getText().toString().trim();
 
@@ -43,12 +40,18 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             resetPassword(email);
         });
 
-        // Sự kiện nút Quay lại
+        // Xử lý sự kiện nút Quay lại (Dòng chữ "Quay lại Đăng nhập")
         tvBack.setOnClickListener(v -> finish());
     }
 
+    private void initView() {
+        // Ánh xạ đúng ID trong file XML bạn gửi
+        edtEmail = findViewById(R.id.edt_reset_email);
+        btnReset = findViewById(R.id.btn_reset_password);
+        tvBack = findViewById(R.id.tv_back_login);
+    }
+
     private void resetPassword(String email) {
-        // Hàm thần thánh của Firebase giúp gửi mail reset pass
         mAuth.sendPasswordResetEmail(email)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {

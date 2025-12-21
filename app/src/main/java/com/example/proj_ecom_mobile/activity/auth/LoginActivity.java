@@ -39,6 +39,10 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnLogin;
     private TextView tvRegister;
 
+    // --- 1. THÊM BIẾN CÒN THIẾU ---
+    private TextView tvForgotPassword;
+    private ImageView imgBack;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +61,21 @@ public class LoginActivity extends AppCompatActivity {
 
         initView();
 
+        // --- 2. THÊM SỰ KIỆN NÚT BACK (X) ---
+        imgBack.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            // Cờ này giúp quay lại Main mà không tạo chồng Activity mới
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            finish();
+        });
+
+        // --- 3. THÊM SỰ KIỆN NÚT QUÊN MẬT KHẨU ---
+        tvForgotPassword.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+            startActivity(intent);
+        });
+
         btnGoogle.setOnClickListener(v -> signInWithGoogle());
 
         tvRegister.setOnClickListener(v -> {
@@ -68,12 +87,18 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initView() {
+        // --- 4. ÁNH XẠ ID CÒN THIẾU (Khớp với XML) ---
+        imgBack = findViewById(R.id.img_back_login);
+        tvForgotPassword = findViewById(R.id.tv_forgot_pass);
+
         btnGoogle = findViewById(R.id.btn_google_sign_in);
         edtEmail = findViewById(R.id.edt_email);
         edtPassword = findViewById(R.id.edt_password);
         btnLogin = findViewById(R.id.btn_login);
         tvRegister = findViewById(R.id.tv_switch_register);
     }
+
+    // --- CÁC HÀM BÊN DƯỚI GIỮ NGUYÊN NHƯ CODE CỦA BẠN ---
 
     private void handleLoginWithEmail() {
         String email = edtEmail.getText().toString().trim();
@@ -141,6 +166,7 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(this, "Xin chào " + email, Toast.LENGTH_SHORT).show();
 
                             Intent intent;
+                            // Check role để chuyển trang (Logic này của bạn rất chuẩn)
                             if ("admin".equals(role)) {
                                 intent = new Intent(LoginActivity.this, com.example.proj_ecom_mobile.activity.admin.AdminMainActivity.class);
                             } else {
