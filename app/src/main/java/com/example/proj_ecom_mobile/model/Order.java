@@ -14,11 +14,16 @@ public class Order implements Serializable {
     private String shippingName;
     private String shippingPhone;
     private String shippingAddress;
+    private String shippingMethod;
+    private double shippingFee;
+    private double discountAmount;
+    private String paymentMethod;
+    private String transferContent; // Biến mới để lưu nội dung CK (Ví dụ: TT A1B2C3)
 
     public Order() {
     }
 
-    public Order(String id, String userId, String userEmail, String date, double totalPrice, String status, List<CartItem> items, String shippingName, String shippingPhone, String shippingAddress) {
+    public Order(String id, String userId, String userEmail, String date, double totalPrice, String status, List<CartItem> items, String shippingName, String shippingPhone, String shippingAddress, String shippingMethod, double shippingFee, double discountAmount, String paymentMethod, String transferContent) {
         this.id = id;
         this.userId = userId;
         this.userEmail = userEmail;
@@ -29,6 +34,11 @@ public class Order implements Serializable {
         this.shippingName = shippingName;
         this.shippingPhone = shippingPhone;
         this.shippingAddress = shippingAddress;
+        this.shippingMethod = shippingMethod;
+        this.shippingFee = shippingFee;
+        this.discountAmount = discountAmount;
+        this.paymentMethod = paymentMethod;
+        this.transferContent = transferContent;
     }
 
     public String getId() { return id; }
@@ -51,4 +61,14 @@ public class Order implements Serializable {
     public void setShippingPhone(String shippingPhone) { this.shippingPhone = shippingPhone; }
     public String getShippingAddress() { return shippingAddress; }
     public void setShippingAddress(String shippingAddress) { this.shippingAddress = shippingAddress; }
+    public String getShippingMethod() { return shippingMethod; }
+    public void setShippingMethod(String shippingMethod) { this.shippingMethod = shippingMethod; }
+    public double getShippingFee() { return shippingFee; }
+    public void setShippingFee(double shippingFee) { this.shippingFee = shippingFee; }
+    public double getDiscountAmount() { return discountAmount; }
+    public void setDiscountAmount(double discountAmount) { this.discountAmount = discountAmount; }
+    public String getPaymentMethod() { return paymentMethod; }
+    public void setPaymentMethod(String paymentMethod) { this.paymentMethod = paymentMethod; }
+    public String getTransferContent() { return transferContent; }
+    public void setTransferContent(String transferContent) { this.transferContent = transferContent; }
 }

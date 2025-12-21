@@ -3,19 +3,18 @@ package com.example.proj_ecom_mobile.activity.admin;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.proj_ecom_mobile.R;
+import com.example.proj_ecom_mobile.adapter.AdminOrderAdapter;
 import com.example.proj_ecom_mobile.model.Order;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class ManageOrderActivity extends AppCompatActivity {
@@ -26,8 +25,7 @@ public class ManageOrderActivity extends AppCompatActivity {
     private TextView tvTitle;
     private FirebaseFirestore db;
     private ArrayList<Order> orderList;
-    private ArrayList<String> displayList;
-    private ArrayAdapter<String> adapter;
+    private AdminOrderAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +42,7 @@ public class ManageOrderActivity extends AppCompatActivity {
         fabAdd.setVisibility(View.GONE);
 
         orderList = new ArrayList<>();
-        displayList = new ArrayList<>();
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, displayList);
+        adapter = new AdminOrderAdapter(this, orderList);
         listView.setAdapter(adapter);
 
         loadOrders();
@@ -63,20 +60,13 @@ public class ManageOrderActivity extends AppCompatActivity {
                 .addSnapshotListener((value, error) -> {
                     if (error != null) return;
                     orderList.clear();
-                    displayList.clear();
-                    DecimalFormat formatter = new DecimalFormat("###,###,###");
-
-                    for (DocumentSnapshot doc : value) {
-                        Order o = doc.toObject(Order.class);
-                        if (o != null) {
-                            o.setId(doc.getId());
-                            orderList.add(o);
-
-                            String info = "Đơn: " + o.getId().substring(0, 6) + "...\n" +
-                                    "KH: " + o.getUserEmail() + "\n" +
-                                    "Tổng: " + formatter.format(o.getTotalPrice()) + "đ\n" +
-                                    "Trạng thái: " + o.getStatus();
-                            displayList.add(info);
+                    if (value != null) {
+                        for (DocumentSnapshot doc : value) {
+                            Order o = doc.toObject(Order.class);
+                            if (o != null) {
+                                o.setId(doc.getId());
+                                orderList.add(o);
+                            }
                         }
                     }
                     adapter.notifyDataSetChanged();
@@ -84,7 +74,7 @@ public class ManageOrderActivity extends AppCompatActivity {
     }
 
     private void showStatusDialog(Order order) {
-        String[] statuses = {"Đang xử lý", "Đang giao", "Đã giao", "Đã hủy"};
+        String[] statuses = {"Chờ xác nhận", "Đang xử lý", "Đang giao", "Đã giao", "Đã hủy"};
         new AlertDialog.Builder(this)
                 .setTitle("Cập nhật trạng thái")
                 .setItems(statuses, (dialog, which) -> {
@@ -95,6 +85,6 @@ public class ManageOrderActivity extends AppCompatActivity {
 
     private void updateStatus(String orderId, String newStatus) {
         db.collection("orders").document(orderId).update("status", newStatus)
-                .addOnSuccessListener(v -> Toast.makeText(this, "Đã cập nhật trạng thái", Toast.LENGTH_SHORT).show());
+                .addOnSuccessListener(v -> Toast.makeText(this, "Đã cập nhật", Toast.LENGTH_SHORT).show());
     }
 }

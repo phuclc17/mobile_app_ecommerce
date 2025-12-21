@@ -34,7 +34,7 @@
 
         <activity android:name=".activity.user.OrderDetailActivity" />
         <activity android:name=".activity.user.UserInfoActivity" />
-
+        <activity android:name=".activity.user.PaymentQRActivity" />
         <activity android:name=".activity.auth.ForgotPasswordActivity" />
         <activity android:name=".activity.auth.RegisterActivity" />
         <activity android:name=".activity.auth.LoginActivity" />
