@@ -2,7 +2,6 @@ package com.example.proj_ecom_mobile.activity.user;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,10 +28,10 @@ public class CartActivity extends AppCompatActivity {
     private TextView txtTotalPrice;
     private Button btnCheckout;
     private ImageView btnBack;
-
     private SQLHelper sqlHelper;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
+    private double currentTotal = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +62,11 @@ public class CartActivity extends AppCompatActivity {
                 Toast.makeText(this, "Vui lòng đăng nhập để thanh toán", Toast.LENGTH_SHORT).show();
                 return;
             }
-            startActivity(new Intent(CartActivity.this, CheckoutActivity.class));
+
+            Intent intent = new Intent(CartActivity.this, CheckoutActivity.class);
+            intent.putExtra("list_cart", cartList);
+            intent.putExtra("total_price", currentTotal);
+            startActivity(intent);
         });
     }
 
@@ -77,13 +80,11 @@ public class CartActivity extends AppCompatActivity {
     public void loadCart() {
         FirebaseUser user = mAuth.getCurrentUser();
         if (user == null) {
-            // Load từ SQL (Chế độ offline)
             cartList.clear();
             cartList.addAll(sqlHelper.getCartItems());
             adapter.notifyDataSetChanged();
             updateTotalPrice();
         } else {
-            // Load từ Firebase (Chế độ online)
             db.collection("Cart").whereEqualTo("id_user", user.getUid())
                     .addSnapshotListener((value, error) -> {
                         if (error != null) return;
@@ -91,16 +92,11 @@ public class CartActivity extends AppCompatActivity {
                         if (value != null) {
                             for (DocumentSnapshot doc : value) {
                                 CartItem item = doc.toObject(CartItem.class);
-
-                                // --- ĐOẠN FIX QUAN TRỌNG: Map dữ liệu thủ công ---
                                 item.setProductId(doc.getString("id_product"));
                                 item.setProductName(doc.getString("name"));
                                 item.setProductImage(doc.getString("image"));
-
-                                // Lấy giá từ trường "price" trên Firebase gán vào "productPrice"
                                 Double price = doc.getDouble("price");
                                 item.setProductPrice(price != null ? price : 0);
-
                                 cartList.add(item);
                             }
                         }
@@ -111,11 +107,11 @@ public class CartActivity extends AppCompatActivity {
     }
 
     public void updateTotalPrice() {
-        double total = 0;
+        currentTotal = 0;
         for (CartItem item : cartList) {
-            total += item.getProductPrice() * item.getQuantity();
+            currentTotal += item.getProductPrice() * item.getQuantity();
         }
         DecimalFormat formatter = new DecimalFormat("###,###,###");
-        txtTotalPrice.setText(formatter.format(total) + "đ");
+        txtTotalPrice.setText(formatter.format(currentTotal) + "đ");
     }
 }

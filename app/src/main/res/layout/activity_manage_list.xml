@@ -14,18 +14,16 @@
         android:background="#FFFFFF"
         android:elevation="4dp"
         android:gravity="center_vertical">
-
         <ImageView
             android:id="@+id/btn_back_admin"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/ic_back"/>
-
         <TextView
             android:id="@+id/tv_header_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Quản lý"
+            android:text="Quản lý Đơn hàng"
             android:textSize="20sp"
             android:textStyle="bold"
             android:gravity="center"
@@ -36,14 +34,12 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <ListView
             android:id="@+id/list_view_data"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingBottom="80dp"
             android:clipToPadding="false"/>
-
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_add"
             android:layout_width="wrap_content"

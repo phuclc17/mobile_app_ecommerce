@@ -64,7 +64,22 @@
                 android:layout_height="wrap_content"
                 android:hint="Địa chỉ giao hàng"/>
         </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sản phẩm đã chọn"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp"/>
 
+        <LinearLayout
+            android:id="@+id/layout_checkout_items"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#FFF"
+            android:padding="10dp"
+            android:layout_marginTop="5dp">
+        </LinearLayout>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -11,6 +11,7 @@ import com.example.proj_ecom_mobile.model.Order;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import java.util.ArrayList;
 
 public class OrderHistoryActivity extends AppCompatActivity {
@@ -23,7 +24,7 @@ public class OrderHistoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_category_products); // Tận dụng layout có sẵn List
+        setContentView(R.layout.activity_category_products);
 
         recyclerView = findViewById(R.id.recycler_category_products);
         btnBack = findViewById(R.id.btn_back);
@@ -44,6 +45,7 @@ public class OrderHistoryActivity extends AppCompatActivity {
 
         FirebaseFirestore.getInstance().collection("orders")
                 .whereEqualTo("userId", uid)
+                .orderBy("date", Query.Direction.DESCENDING)
                 .addSnapshotListener((value, error) -> {
                     if(error != null) return;
                     orderList.clear();

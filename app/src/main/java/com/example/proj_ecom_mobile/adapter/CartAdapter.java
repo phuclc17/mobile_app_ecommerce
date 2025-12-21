@@ -5,7 +5,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,6 +15,9 @@ import com.example.proj_ecom_mobile.R;
 import com.example.proj_ecom_mobile.activity.user.CartActivity;
 import com.example.proj_ecom_mobile.database.SQLHelper;
 import com.example.proj_ecom_mobile.model.CartItem;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.DocumentSnapshot;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -24,6 +26,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     private Context context;
     private ArrayList<CartItem> cartList;
     private SQLHelper sqlHelper;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private String userId = FirebaseAuth.getInstance().getUid();
 
     public CartAdapter(Context context, ArrayList<CartItem> cartList) {
         this.context = context;
@@ -57,36 +61,43 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         holder.btnMinus.setOnClickListener(v -> {
             int currentQty = item.getQuantity();
             if (currentQty > 1) {
-                int newQty = currentQty - 1;
-                item.setQuantity(newQty);
-                holder.txtQty.setText(String.valueOf(newQty));
-                sqlHelper.updateQuantity(item.getProductId(), item.getSize(), newQty);
-
-                if (context instanceof CartActivity) {
-                    ((CartActivity) context).updateTotalPrice();
-                }
+                updateItemQuantity(item, currentQty - 1, holder);
             } else {
                 showDeleteDialog(position, item);
             }
         });
 
         holder.btnPlus.setOnClickListener(v -> {
-            // Kiểm tra tồn kho của chính size này (item.getStock() đã lưu max stock của size đó)
             if (item.getQuantity() < item.getStock()) {
-                int newQty = item.getQuantity() + 1;
-                item.setQuantity(newQty);
-                holder.txtQty.setText(String.valueOf(newQty));
-                sqlHelper.updateQuantity(item.getProductId(), item.getSize(), newQty);
-
-                if (context instanceof CartActivity) {
-                    ((CartActivity) context).updateTotalPrice();
-                }
+                updateItemQuantity(item, item.getQuantity() + 1, holder);
             } else {
-                Toast.makeText(context, "Quá số lượng tồn kho của size " + item.getSize() + "! (Max: " + item.getStock() + ")", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Max: " + item.getStock(), Toast.LENGTH_SHORT).show();
             }
         });
 
         holder.btnDelete.setOnClickListener(v -> showDeleteDialog(position, item));
+    }
+
+    private void updateItemQuantity(CartItem item, int newQty, CartViewHolder holder) {
+        item.setQuantity(newQty);
+        holder.txtQty.setText(String.valueOf(newQty));
+        sqlHelper.updateQuantity(item.getProductId(), item.getSize(), newQty);
+
+        if (userId != null) {
+            db.collection("Cart")
+                    .whereEqualTo("id_user", userId)
+                    .whereEqualTo("id_product", item.getProductId())
+                    .whereEqualTo("size", item.getSize())
+                    .get().addOnSuccessListener(queryDocumentSnapshots -> {
+                        for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                            doc.getReference().update("quantity", newQty);
+                        }
+                    });
+        }
+
+        if (context instanceof CartActivity) {
+            ((CartActivity) context).updateTotalPrice();
+        }
     }
 
     @Override
@@ -100,6 +111,19 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
                 .setMessage("Bạn có muốn xóa sản phẩm này khỏi giỏ hàng?")
                 .setPositiveButton("Xóa", (dialog, which) -> {
                     sqlHelper.deleteCartItem(item.getProductId(), item.getSize());
+
+                    if (userId != null) {
+                        db.collection("Cart")
+                                .whereEqualTo("id_user", userId)
+                                .whereEqualTo("id_product", item.getProductId())
+                                .whereEqualTo("size", item.getSize())
+                                .get().addOnSuccessListener(queryDocumentSnapshots -> {
+                                    for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                                        doc.getReference().delete();
+                                    }
+                                });
+                    }
+
                     cartList.remove(position);
                     notifyItemRemoved(position);
                     notifyItemRangeChanged(position, cartList.size());

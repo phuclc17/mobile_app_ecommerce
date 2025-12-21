@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import com.example.proj_ecom_mobile.R;
 import com.example.proj_ecom_mobile.model.Order;
+import com.example.proj_ecom_mobile.model.CartItem;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -38,6 +39,17 @@ public class AdminOrderAdapter extends BaseAdapter {
         ((TextView) view.findViewById(R.id.tv_admin_email)).setText("KH: " + o.getUserEmail());
         ((TextView) view.findViewById(R.id.tv_admin_total)).setText("Tổng: " + formatter.format(o.getTotalPrice()) + "đ");
         ((TextView) view.findViewById(R.id.tv_admin_status)).setText("Trạng thái: " + o.getStatus());
+
+        TextView tvProducts = view.findViewById(R.id.tv_admin_products);
+        StringBuilder productInfo = new StringBuilder();
+        if (o.getItems() != null) {
+            for (CartItem item : o.getItems()) {
+                productInfo.append("- ").append(item.getProductName())
+                        .append(" (Size: ").append(item.getSize())
+                        .append(") x").append(item.getQuantity()).append("\n");
+            }
+        }
+        tvProducts.setText(productInfo.toString());
 
         TextView tvPayment = view.findViewById(R.id.tv_admin_payment);
         TextView tvQR = view.findViewById(R.id.tv_admin_transfer_code);

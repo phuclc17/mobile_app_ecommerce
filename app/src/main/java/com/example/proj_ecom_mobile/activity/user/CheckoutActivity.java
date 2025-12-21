@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -15,7 +16,6 @@ import com.example.proj_ecom_mobile.R;
 import com.example.proj_ecom_mobile.model.CartItem;
 import com.example.proj_ecom_mobile.model.Order;
 import com.example.proj_ecom_mobile.model.User;
-import com.example.proj_ecom_mobile.model.Voucher;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -38,16 +38,14 @@ public class CheckoutActivity extends AppCompatActivity {
     private Button btnConfirm, btnApplyVoucher;
     private ImageView btnBack;
     private RadioGroup rgShipping, rgPayment;
-    private RadioButton rbStandard, rbExpress, rbQr;
+    private RadioButton rbStandard, rbExpress, rbCod, rbQr;
+    private LinearLayout layoutItems;
 
     private ArrayList<CartItem> cartList;
     private double subTotal = 0;
     private double shippingFee = 30000;
     private double discountAmount = 0;
     private double finalTotal = 0;
-
-    // Biến lưu voucher đang áp dụng
-    private Voucher appliedVoucher = null;
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
@@ -59,9 +57,19 @@ public class CheckoutActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-        cartList = new ArrayList<>();
 
         initView();
+
+        // Nhận dữ liệu từ Giỏ hàng
+        cartList = (ArrayList<CartItem>) getIntent().getSerializableExtra("list_cart");
+        subTotal = getIntent().getDoubleExtra("total_price", 0);
+
+        if (cartList == null || cartList.isEmpty()) {
+            loadCartData();
+        } else {
+            updateTotalUI();
+            displayOrderItems();
+        }
 
         rgShipping.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.rb_standard) {
@@ -73,8 +81,6 @@ public class CheckoutActivity extends AppCompatActivity {
         });
 
         btnApplyVoucher.setOnClickListener(v -> handleApplyVoucher());
-
-        loadCartData();
         prefillUserData();
 
         btnBack.setOnClickListener(v -> finish());
@@ -100,7 +106,26 @@ public class CheckoutActivity extends AppCompatActivity {
         rgPayment = findViewById(R.id.rg_payment);
         rbStandard = findViewById(R.id.rb_standard);
         rbExpress = findViewById(R.id.rb_express);
+        rbCod = findViewById(R.id.rb_cod);
         rbQr = findViewById(R.id.rb_qr);
+        layoutItems = findViewById(R.id.layout_checkout_items);
+    }
+
+    private void displayOrderItems() {
+        if (layoutItems == null) return;
+        layoutItems.removeAllViews();
+        DecimalFormat formatter = new DecimalFormat("###,###,###");
+        if (cartList != null) {
+            for (CartItem item : cartList) {
+                TextView tv = new TextView(this);
+                String content = "- " + item.getProductName() + " (Size: " + item.getSize() + ") x"
+                        + item.getQuantity() + " : " + formatter.format(item.getProductPrice() * item.getQuantity()) + "đ";
+                tv.setText(content);
+                tv.setPadding(0, 10, 0, 10);
+                tv.setTextColor(getResources().getColor(android.R.color.black));
+                layoutItems.addView(tv);
+            }
+        }
     }
 
     private void prefillUserData() {
@@ -120,13 +145,13 @@ public class CheckoutActivity extends AppCompatActivity {
 
     private void loadCartData() {
         FirebaseUser user = mAuth.getCurrentUser();
-        if (user == null) { finish(); return; }
+        if (user == null) return;
 
         db.collection("Cart")
                 .whereEqualTo("id_user", user.getUid())
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
-                    cartList.clear();
+                    cartList = new ArrayList<>();
                     subTotal = 0;
                     for (DocumentSnapshot doc : queryDocumentSnapshots) {
                         CartItem item = doc.toObject(CartItem.class);
@@ -135,14 +160,15 @@ public class CheckoutActivity extends AppCompatActivity {
                         item.setProductImage(doc.getString("image"));
                         Double price = doc.getDouble("price");
                         item.setProductPrice(price != null ? price : 0);
-
                         cartList.add(item);
                         subTotal += item.getProductPrice() * item.getQuantity();
                     }
+                    displayOrderItems();
                     updateTotalUI();
                 });
     }
 
+    // --- ĐOẠN CODE ĐÃ SỬA LOGIC VOUCHER ---
     private void handleApplyVoucher() {
         String code = edtVoucher.getText().toString().trim().toUpperCase();
         if (TextUtils.isEmpty(code)) {
@@ -150,46 +176,42 @@ public class CheckoutActivity extends AppCompatActivity {
             return;
         }
 
-        db.collection("Vouchers")
-                .whereEqualTo("code", code)
-                .get()
+        db.collection("Vouchers").whereEqualTo("code", code).get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     if (!queryDocumentSnapshots.isEmpty()) {
                         DocumentSnapshot doc = queryDocumentSnapshots.getDocuments().get(0);
-                        Voucher v = doc.toObject(Voucher.class);
-                        if (v != null) {
-                            v.setId(doc.getId());
 
-                            // 1. KIỂM TRA SỐ LƯỢNG
-                            if (v.getQuantity() <= 0) {
-                                discountAmount = 0;
-                                appliedVoucher = null;
-                                Toast.makeText(this, "Mã giảm giá đã hết lượt sử dụng!", Toast.LENGTH_LONG).show();
-                            } else {
-                                // 2. TÍNH TIỀN GIẢM
-                                if ("PERCENT".equals(v.getType())) {
-                                    discountAmount = subTotal * (v.getValue() / 100);
+                        // 1. Lấy đúng tên trường "value" mà bên Admin đã lưu
+                        Double value = doc.getDouble("value");
+                        String type = doc.getString("type");
+                        Long quantity = doc.getLong("quantity");
+
+                        if (quantity != null && quantity > 0) {
+                            if (value != null) {
+                                // 2. Kiểm tra loại voucher để tính toán
+                                if ("PERCENT".equals(type)) {
+                                    // Nếu là phần trăm: Giảm = Tổng tiền hàng * (value / 100)
+                                    discountAmount = (subTotal * value) / 100;
                                 } else {
-                                    discountAmount = v.getValue();
+                                    // Nếu là số tiền cố định (FIXED)
+                                    discountAmount = value;
                                 }
 
-                                // Không giảm quá tổng tiền
-                                if (discountAmount > (subTotal + shippingFee)) {
-                                    discountAmount = subTotal + shippingFee;
-                                }
-
-                                appliedVoucher = v; // Lưu lại voucher đã áp dụng thành công
-                                Toast.makeText(this, "Áp dụng mã thành công!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(this, "Áp dụng thành công!", Toast.LENGTH_SHORT).show();
+                                updateTotalUI(); // Cập nhật lại giao diện ngay
                             }
+                        } else {
+                            Toast.makeText(this, "Mã này đã hết lượt sử dụng", Toast.LENGTH_SHORT).show();
+                            discountAmount = 0;
+                            updateTotalUI();
                         }
                     } else {
                         discountAmount = 0;
-                        appliedVoucher = null;
-                        Toast.makeText(this, "Mã giảm giá không tồn tại", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Mã không tồn tại", Toast.LENGTH_SHORT).show();
+                        updateTotalUI();
                     }
-                    updateTotalUI();
                 })
-                .addOnFailureListener(e -> Toast.makeText(this, "Lỗi kết nối", Toast.LENGTH_SHORT).show());
+                .addOnFailureListener(e -> Toast.makeText(this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 
     private void updateTotalUI() {
@@ -197,7 +219,6 @@ public class CheckoutActivity extends AppCompatActivity {
         if (finalTotal < 0) finalTotal = 0;
 
         DecimalFormat formatter = new DecimalFormat("###,###,###");
-
         txtSubTotal.setText(formatter.format(subTotal) + "đ");
         txtShippingFee.setText(formatter.format(shippingFee) + "đ");
         txtDiscount.setText("-" + formatter.format(discountAmount) + "đ");
@@ -210,72 +231,34 @@ public class CheckoutActivity extends AppCompatActivity {
         String address = edtAddress.getText().toString().trim();
 
         if (TextUtils.isEmpty(name) || TextUtils.isEmpty(phone) || TextUtils.isEmpty(address)) {
-            Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin giao hàng", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (cartList.isEmpty()) {
+        if (cartList == null || cartList.isEmpty()) {
             Toast.makeText(this, "Giỏ hàng trống!", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        // KIỂM TRA LẠI VOUCHER TRƯỚC KHI ĐẶT (tránh trường hợp 2 người cùng nhập mã cuối cùng 1 lúc)
-        if (appliedVoucher != null) {
-            db.collection("Vouchers").document(appliedVoucher.getId()).get().addOnSuccessListener(doc -> {
-                Long currentQty = doc.getLong("quantity");
-                if (currentQty == null || currentQty <= 0) {
-                    Toast.makeText(this, "Rất tiếc, mã giảm giá vừa hết lượt!", Toast.LENGTH_LONG).show();
-                    discountAmount = 0;
-                    appliedVoucher = null;
-                    updateTotalUI();
-                } else {
-                    proceedPlaceOrder(name, phone, address);
-                }
-            });
-        } else {
-            proceedPlaceOrder(name, phone, address);
-        }
-    }
-
-    private void proceedPlaceOrder(String name, String phone, String address) {
-        String shipMethod = rbStandard.isChecked() ? "Tiêu chuẩn" : "Hỏa tốc";
-        String payMethod = rbQr.isChecked() ? "QR" : "COD";
 
         FirebaseUser user = mAuth.getCurrentUser();
         if (user == null) return;
 
         String orderId = UUID.randomUUID().toString();
         String currentDate = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault()).format(new Date());
-
-        String transferContent = "";
-        if (payMethod.equals("QR")) {
-            transferContent = "TT " + (orderId.length() > 6 ? orderId.substring(0, 6).toUpperCase() : orderId.toUpperCase());
-        }
+        String payMethod = rbQr.isChecked() ? "QR" : "COD";
+        String transferContent = payMethod.equals("QR") ? "TT " + orderId.substring(0, 6).toUpperCase() : "";
 
         Order order = new Order(
-                orderId,
-                user.getUid(),
-                user.getEmail(),
-                currentDate,
-                finalTotal,
-                "Chờ xác nhận",
-                cartList,
-                name,
-                phone,
-                address,
-                shipMethod,
-                shippingFee,
-                discountAmount,
-                payMethod,
-                transferContent
+                orderId, user.getUid(), user.getEmail(), currentDate, finalTotal, "Chờ xác nhận",
+                new ArrayList<>(cartList), name, phone, address,
+                rbStandard.isChecked() ? "Tiêu chuẩn" : "Hỏa tốc",
+                shippingFee, discountAmount, payMethod, transferContent
         );
 
-        db.collection("orders").document(orderId)
-                .set(order)
+        db.collection("orders").document(orderId).set(order)
                 .addOnSuccessListener(aVoid -> {
                     checkAndUpdateUserProfile(user.getUid(), name, phone, address);
                     processAfterOrder(user.getUid(), order, payMethod);
-                })
-                .addOnFailureListener(e -> Toast.makeText(this, "Lỗi đặt hàng: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                });
     }
 
     private void checkAndUpdateUserProfile(String uid, String name, String phone, String address) {
@@ -284,7 +267,7 @@ public class CheckoutActivity extends AppCompatActivity {
             User u = doc.toObject(User.class);
             if (u != null) {
                 Map<String, Object> updates = new HashMap<>();
-                if (TextUtils.isEmpty(u.getName()) || u.getName().equals(u.getEmail())) updates.put("name", name);
+                if (TextUtils.isEmpty(u.getName())) updates.put("name", name);
                 if (TextUtils.isEmpty(u.getPhone())) updates.put("phone", phone);
                 if (TextUtils.isEmpty(u.getAddress())) updates.put("address", address);
                 if (!updates.isEmpty()) userRef.update(updates);
@@ -293,53 +276,45 @@ public class CheckoutActivity extends AppCompatActivity {
     }
 
     private void processAfterOrder(String userId, Order order, String payMethod) {
-        // 1. TRỪ TỒN KHO SẢN PHẨM
-        for (CartItem item : cartList) {
-            DocumentReference productRef = db.collection("products").document(item.getProductId());
-            String sizeField = "stock" + item.getSize();
-            db.runTransaction(transaction -> {
-                DocumentSnapshot snapshot = transaction.get(productRef);
-                Long currentStock = snapshot.getLong(sizeField);
-                if (currentStock == null) currentStock = 0L;
-                long newStock = currentStock - item.getQuantity();
-                if (newStock < 0) newStock = 0;
-                transaction.update(productRef, sizeField, newStock);
-                return null;
-            });
+        // Trừ lượt dùng voucher (Nếu có dùng mã)
+        String code = edtVoucher.getText().toString().trim().toUpperCase();
+        if (!TextUtils.isEmpty(code) && discountAmount > 0) {
+            db.collection("Vouchers").whereEqualTo("code", code).get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        if (!queryDocumentSnapshots.isEmpty()) {
+                            DocumentSnapshot doc = queryDocumentSnapshots.getDocuments().get(0);
+                            Long currentQty = doc.getLong("quantity");
+                            if (currentQty != null && currentQty > 0) {
+                                doc.getReference().update("quantity", currentQty - 1);
+                            }
+                        }
+                    });
         }
 
-        // 2. TRỪ SỐ LƯỢNG VOUCHER (NẾU CÓ DÙNG)
-        if (appliedVoucher != null) {
-            DocumentReference voucherRef = db.collection("Vouchers").document(appliedVoucher.getId());
-            db.runTransaction(transaction -> {
-                DocumentSnapshot snapshot = transaction.get(voucherRef);
-                Long currentQty = snapshot.getLong("quantity");
-                if (currentQty != null && currentQty > 0) {
-                    transaction.update(voucherRef, "quantity", currentQty - 1);
-                }
-                return null;
-            });
-        }
-
-        // 3. XÓA GIỎ HÀNG VÀ CHUYỂN TRANG
+        // Trừ kho và xóa giỏ hàng
         db.collection("Cart").whereEqualTo("id_user", userId).get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     WriteBatch batch = db.batch();
-                    for (DocumentSnapshot doc : queryDocumentSnapshots) batch.delete(doc.getReference());
+                    for (CartItem item : cartList) {
+                        DocumentReference productRef = db.collection("products").document(item.getProductId());
+                        String sizeField = "stock" + item.getSize();
+                        batch.update(productRef, sizeField, com.google.firebase.firestore.FieldValue.increment(-item.getQuantity()));
+                    }
+                    for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                        batch.delete(doc.getReference());
+                    }
                     batch.commit().addOnSuccessListener(aVoid -> {
-
                         if (payMethod.equals("QR")) {
-                            Intent intent = new Intent(CheckoutActivity.this, PaymentQRActivity.class);
+                            Intent intent = new Intent(this, com.example.proj_ecom_mobile.activity.user.PaymentQRActivity.class);
                             intent.putExtra("order_data", order);
                             startActivity(intent);
-                            finish();
                         } else {
-                            Toast.makeText(CheckoutActivity.this, "Đặt hàng thành công!", Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(CheckoutActivity.this, MainActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            Toast.makeText(this, "Đặt hàng thành công!", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(this, com.example.proj_ecom_mobile.activity.user.MainActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
-                            finish();
                         }
+                        finish();
                     });
                 });
     }
