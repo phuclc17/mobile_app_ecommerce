@@ -43,7 +43,7 @@ public class PaymentQRActivity extends AppCompatActivity {
             String qrUrl = "https://img.vietqr.io/image/" + BANK_ID + "-" + ACCOUNT_NO + "-" + TEMPLATE + ".png" +
                     "?amount=" + amount +
                     "&addInfo=" + content +
-                    "&accountName=MINIMALISH SHOP";
+                    "&accountName=HUYNH NHAT";
 
             Glide.with(this).load(qrUrl).into(imgQR);
 
